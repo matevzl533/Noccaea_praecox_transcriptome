@@ -21,7 +21,7 @@ We used [Trim Galore](https://github.com/FelixKrueger/TrimGalore) for adapter an
 
 ### Map trimmed reads to a blacklist to remove unwanted (rRNA reads)
 
-From SILVA, we download the SSUParc and LSUParc fasta files (https://ftp.arb-silva.de/?pk_vid=8352a8ccf0ead1d7168388545541b6c1), concatenating them, and replacing U characters with T, as our sequence reads are in DNA space.
+From SILVA, we download the SSUParc and LSUParc fasta files (https://ftp.arb-silva.de/?pk_vid=8352a8ccf0ead1d7168388545541b6c1), concatenating them, and replacing U characters with T, as our sequence reads are in DNA space. Needs to be done prior to running samples, as it is not included in the main code.
 
 ### Run fastqc on your processed reads that pass qc and filtering from the above steps
 
