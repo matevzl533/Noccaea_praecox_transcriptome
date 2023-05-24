@@ -51,7 +51,6 @@ for r1 in "$fqdir"/*1.fastq.gz; do
 done
 echo "Time needed to finish Rcorrector step on raw reads: $SECONDS seconds" >> pipeline_log.txt
 
-
 # Discard read pairs for which one of the reads is deemed unfixable
 # Original python script from https://github.com/harvardinformatics/TranscriptomeAssemblyTools
 # Translated to Python3
@@ -94,6 +93,7 @@ done
 echo "Time needed to finish Trim Galor step: $SECONDS seconds" >> pipeline_log.txt
 
 # Check against SILVA rRNA db
+# The files you want are *_blacklist_paired_unaligned.fq.gz
 
 fqdir=/ssd4tb/trimmed_reads
 for r1 in "$fqdir"/*1.cor_val_1.fq; do
@@ -115,11 +115,15 @@ SECONDS=0
 echo "Running FastQC on processed reads" | tee -a pipeline_log.txt
 echo Current Date and Time is: `date +"%Y-%m-%d %T"` >> pipeline_log.txt
 
+# Moving the files we want to filtered_reads folder
+
 mkdir /ssd4tb/filtered_reads
 mv /ssd4tb/trimmed_reads/*_paired_unaligned.fq* /ssd4tb/filtered_reads
 cd /ssd4tb/filtered_reads
 
-# run FastQC on all files in the dir trimmed_reads
+# Postprocessing quality check
+# run FastQC on all files in the trimmed_reads folder
+
 find -name '*_paired_unaligned.fq*.gz' | xargs fastqc
 
 # combine reports with MultiQC
