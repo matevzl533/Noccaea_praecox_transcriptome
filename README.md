@@ -1,5 +1,5 @@
 # Transcriptome de novo assembly protocol
-Protocol roughly follows the protocol described at: https://informatics.fas.harvard.edu/best-practices-for-de-novo-transcriptome-assembly-with-trinity.html
+Protocol roughly follows the protocol described at: https://informatics.fas.harvard.edu/best-practices-for-de-novo-transcriptome-assembly-with-trinity.html and uses Trinity for de novo assembly. Annotations of the contigs were done using Trinotate. Differential expression analysis was done using DESeq2, edgeR and limma/voom in R.
 
 ## Preprocessing
 
