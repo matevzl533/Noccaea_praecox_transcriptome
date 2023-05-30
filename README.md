@@ -31,11 +31,11 @@ Re-run the QC from step 1. Ideally, there will be no trend in adapter contaminat
 
 ### de novo assembly with Trinity
 
-We used Trinity for transcriptome de novo assembly with default parameters with the addition of strand information (--SS_lib_type RF) and minimum contig length (--min_contig_length 200).
+We used [Trinity](https://github.com/trinityrnaseq/trinityrnaseq) for transcriptome de novo assembly with default parameters with the addition of strand information (--SS_lib_type RF).
 
 ### Removing redundancy
 
-To reduce redundancy, contigs from the assembly were clustered using CD-HIT with the following parameters: -s 0.9 -aS 0.9.
+To reduce redundancy, contigs from the assembly were clustered using [CD-HIT](https://github.com/weizhongli/cdhit) with the following parameters: -s 0.9 -aS 0.9.
 
 ## Accessing assembly quality
 
@@ -45,8 +45,12 @@ N50 statistics, and counts of the number of Trinity contigs was generated using 
 
 ### Quantify read support for the assembly
 
-To evaluate read support for the assembly is a three step process. First, you build a bowtie2 index for your assembly. Next, you map your reads and calculate alignment statistics. The align_stats.txt file will provide info on the percentage of read pairs that mapped concordantly, as well as an overall alignment rate.
+To evaluate read support for the assembly we build a bowtie2 index for the assembly, mapped the reads and calculated the alignment statistics. The align_stats.txt file provides info on the percentage of read pairs that mapped concordantly, as well as an overall alignment rate.
 
 ### Quantifying completeness
 
-To assess completeness, we use BUSCO. 
+To assess completeness, we use BUSCO.
+
+## Annotations
+
+The assembled transcriptome was annotated using the TransDecoder (Trinity) and Trinotate as described in the wikis of both tools.
