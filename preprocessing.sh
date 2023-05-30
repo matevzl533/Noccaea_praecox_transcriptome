@@ -1,21 +1,14 @@
 #!/bin/bash
 
-################################################################
-# raw reads must be in folder 'raw_reads' in the ssd4tb folder #
-# else you need to replace /ssd4tb variable with your path.    #
-# 'trimming' conda env with installed tools must exist         #
-################################################################
+###################################################################
+# raw reads must be in folder 'raw_reads' in the ssd4tb folder    #
+# else you need to replace /ssd4tb variable with your path.       #
+# 'trimming' conda env with installed tools must exist            #
+# otheriwise script needs to be modified using conda run commands #
+###################################################################
 
-# Define the name of the target environment
-TARGET_ENV="trimming"
-
-# Compare the names
-if [ "$CONDA_DEFAULT_ENV" == "$TARGET_ENV" ]; then
-  echo "$TARGET_ENV is currently active."
-else
-	echo "Activating conda environment trimming."
-  conda activate trimming
-fi
+# Move to working ssd
+cd ssd4tb
 
 # Initial quality check using FastQC and MultiQC
 echo "Preprocessing pipeline started" > pipeline_log.txt
