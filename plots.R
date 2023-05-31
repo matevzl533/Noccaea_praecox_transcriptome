@@ -48,6 +48,10 @@ split_GOx <- function(x, hit = "gene_ontology_BLASTX"){
 # Read Trinotate table
 trinotate_data <- read_trinotate("data/Np_cdhit90.tsv")
 
+##################################################################
+# Figure 1
+##################################################################
+
 # Generate GO object
 go <- split_GOp(trinotate_data)
 
@@ -71,6 +75,9 @@ go_plot.gg <- go_1000 %>%
 # Save ggplot object
 ggsave(go_plot.gg, file="plots/GO_terms_plot.pdf", dpi = 300, width = 3000, height = 1500, units = "px")
 
+##################################################################
+# Figure 2
+##################################################################
 
 library(limma)
 
