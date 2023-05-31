@@ -70,3 +70,41 @@ go_plot.gg <- go_1000 %>%
 
 # Save ggplot object
 ggsave(go_plot.gg, file="plots/GO_terms_plot.pdf", dpi = 300, width = 3000, height = 1500, units = "px")
+
+
+library(limma)
+
+# Get Kegg IDs
+kegg_genes <- getGeneKEGGLinks(species.KEGG = "ath", convert = FALSE)
+kegg_links <- getKEGGPathwayNames(species.KEGG = "ath", remove.qualifier = FALSE)
+
+# Join the Kegg IDs and gene IDs
+kegg <- ath %>%
+  select(Kegg) %>%
+  rename(GeneID = Kegg) %>%
+  left_join(., kegg_genes, by="GeneID", multiple="all") %>%
+  mutate(PathwayID = stringr::str_remove(PathwayID, "path:")) %>%
+  left_join(., kegg_links, by="PathwayID") %>%
+  mutate(Description = stringr::str_split_i(Description, " - ",1)) %>%
+  group_by(Description) %>%
+  summarise(Count = n()) %>%
+  arrange(., desc(Count))
+  
+# Filter for Kegg terms with more than 500 transcripts
+kegg_500 <- kegg %>%
+  filter(Count > 500)
+  
+# Generate a vector to override ggplot alphabetical ordering
+kegg_500$Description <- factor(kegg_500$Description, levels = kegg_500$Description)
+
+# Generate ggplot object
+kegg_500.gg <- kegg_500 %>%
+  filter(!is.na(Description)) %>%
+  ggplot(.) +
+  geom_bar(aes(x=Description, y=Count), stat = "identity") +
+  theme_classic() +
+  ylab("No. of transcripts") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), axis.title.x = element_blank())
+  
+# Save ggplot object
+ggsave(kegg_plot.gg, file="plots/kegg_terms_plot.pdf", dpi = 300, width = 3000, height = 1500, units = "px")  
