@@ -113,29 +113,37 @@ ggsave(go_plot.gg, file="plots/GO_terms_plot.pdf", dpi = 300, width = 3000, heig
 # Calculating the numbers for reporting the results
 ## Ontologies
 go %>%
+  select(transcript, ontology) %>%
+  distinct() %>%
   dplyr::count(ontology) %>%
-  mutate(percent = n*100/sum(n))
+  mutate(percent = round(n*100/sum(n),1))
 
 ## Biological process
 go %>%
   filter(ontology == "biological_process") %>%
+  select(transcript, name) %>%
+  distinct() %>%
   dplyr::count(name) %>%
   arrange(desc(n)) %>%
-  mutate(percent = n*100/sum(n))
+  mutate(percent = round(n*100/sum(n),1))
 
 ## Cellular component
 go %>%
   filter(ontology == "cellular_component") %>%
+  select(transcript, name) %>%
+  distinct() %>%
   dplyr::count(name) %>%
   arrange(desc(n)) %>%
-  mutate(percent = n*100/sum(n))
+  mutate(percent = round(n*100/sum(n),1))
 
 ## Molecular function
 go %>%
   filter(ontology == "molecular_function") %>%
+  select(transcript, name) %>%
+  distinct() %>%
   dplyr::count(name) %>%
   arrange(desc(n)) %>%
-  mutate(percent = n*100/sum(n))
+  mutate(percent = round(n*100/sum(n),1))
 
 ##################################################################
 # Figure 3
