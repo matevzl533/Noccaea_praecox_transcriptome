@@ -2,7 +2,7 @@ library(trinotateR)
 library(dplyr)
 library(ggplot2)
 
-# Modified split_GO functions due to Trinotate table changes
+# Modified split_GO functions from trinotateR due to Trinotate table changes
 split_GOp <- function(x, hit = "gene_ontology_BLASTP"){
   y <- x[!is.na( get(hit) ), .( get(hit), gene_id, transcript_id, prot_id) ]
   
@@ -52,6 +52,42 @@ trinotate_data <- read_trinotate("data/Np_cdhit90.tsv")
 # Figure 1
 ##################################################################
 
+# Load length distribution data
+trinity_length <- read.table("data/Trinity_length_distribution.txt")
+trinity_cdhit90_length <- read.table("data/Trinity_cdhit90_length_distribution.txt")
+
+# Separate into bins and plot
+## Original assembly
+trinity_ld.gg <- trinity_length %>%
+  group_by(group = cut(V2, breaks = seq(0, 3000, 200))) %>%
+  summarise(n = sum(V2)) %>%
+  ggplot(.) +
+  geom_bar(aes(x=group, y=n), stat = "identity", fill="#F8766D") +
+  theme_classic() +
+  ylab("No. of transcripts") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), axis.title.x = element_blank(),
+        legend.position = "none")
+
+## Reduced redundancy assembly
+trinity_cdhit90_ld.gg <- trinity_cdhit90_length %>%
+  group_by(group = cut(V2, breaks = seq(0, 3000, 200))) %>%
+  summarise(n = sum(V2)) %>%
+  ggplot(.) +
+  geom_bar(aes(x=group, y=n), stat = "identity", fill="#7CAE00") +
+  theme_classic() +
+  ylab("No. of unigenes") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), axis.title.x = element_blank(),
+        legend.position = "none")
+
+# Arrange plots into a grouped plot and save
+length_distributions.gg <- ggpubr::ggarrange(trinity_ld.gg, trinity_cdhit90_ld.gg, ncol=2, nrow = 1, labels = c("a", "b"))
+ggsave(length_distributions.gg, file="plots/length_distributions.png", dpi = 300, width = 3000, height = 1500, units = "px")
+
+
+##################################################################
+# Figure 2
+##################################################################
+
 # Generate GO object
 go <- split_GOp(trinotate_data)
 
@@ -76,7 +112,7 @@ go_plot.gg <- go_1000 %>%
 ggsave(go_plot.gg, file="plots/GO_terms_plot.pdf", dpi = 300, width = 3000, height = 1500, units = "px")
 
 ##################################################################
-# Figure 2
+# Figure 3
 ##################################################################
 
 library(limma)
