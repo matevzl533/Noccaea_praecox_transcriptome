@@ -83,7 +83,6 @@ trinity_cdhit90_ld.gg <- trinity_cdhit90_length %>%
 length_distributions.gg <- ggpubr::ggarrange(trinity_ld.gg, trinity_cdhit90_ld.gg, ncol=2, nrow = 1, labels = c("a", "b"))
 ggsave(length_distributions.gg, file="plots/length_distributions.png", dpi = 300, width = 3000, height = 1500, units = "px")
 
-
 ##################################################################
 # Figure 2
 ##################################################################
@@ -110,6 +109,33 @@ go_plot.gg <- go_1000 %>%
 
 # Save ggplot object
 ggsave(go_plot.gg, file="plots/GO_terms_plot.pdf", dpi = 300, width = 3000, height = 1500, units = "px")
+
+# Calculating the numbers for reporting the results
+## Ontologies
+go %>%
+  dplyr::count(ontology) %>%
+  mutate(percent = n*100/sum(n))
+
+## Biological process
+go %>%
+  filter(ontology == "biological_process") %>%
+  dplyr::count(name) %>%
+  arrange(desc(n)) %>%
+  mutate(percent = n*100/sum(n))
+
+## Cellular component
+go %>%
+  filter(ontology == "cellular_component") %>%
+  dplyr::count(name) %>%
+  arrange(desc(n)) %>%
+  mutate(percent = n*100/sum(n))
+
+## Molecular function
+go %>%
+  filter(ontology == "molecular_function") %>%
+  dplyr::count(name) %>%
+  arrange(desc(n)) %>%
+  mutate(percent = n*100/sum(n))
 
 ##################################################################
 # Figure 3
