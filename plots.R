@@ -168,20 +168,22 @@ kegg <- ath %>%
   arrange(., desc(Count))
   
 # Filter for Kegg terms with more than 500 transcripts
-kegg_500 <- kegg %>%
-  filter(Count > 500)
+kegg_10 <- kegg %>%
+  top_n(10)
   
 # Generate a vector to override ggplot alphabetical ordering
-kegg_500$Description <- factor(kegg_500$Description, levels = kegg_500$Description)
+kegg_10$Description <- factor(kegg_10$Description, levels = kegg_10$Description)
 
 # Generate ggplot object
-kegg_500.gg <- kegg_500 %>%
+kegg_10.gg <- kegg_10 %>%
   filter(!is.na(Description)) %>%
-  ggplot(.) +
-  geom_bar(aes(x=Description, y=Count), stat = "identity") +
-  theme_classic() +
+  ggplot(.,aes(x="", y=Count, fill=Description)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0) +
+  theme_void() +
   ylab("No. of transcripts") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), axis.title.x = element_blank())
+  labs(fill="Top 10 KEGG terms") +
+  theme(axis.text = element_blank())
   
 # Save ggplot object
-ggsave(kegg_plot.gg, file="plots/kegg_terms_plot.pdf", dpi = 300, width = 3000, height = 1500, units = "px")  
+ggsave(kegg_10.gg, file="plots/kegg_terms_plot.pdf", dpi = 300, width = 3000, height = 1500, units = "px")  
