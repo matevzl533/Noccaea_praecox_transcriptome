@@ -1,5 +1,5 @@
 # Transcriptome de novo assembly protocol
-Protocol roughly follows the protocol described at: https://informatics.fas.harvard.edu/best-practices-for-de-novo-transcriptome-assembly-with-trinity.html and uses Trinity for de novo assembly. Annotations of the contigs were done using Trinotate. Differential expression analysis was done using DESeq2, edgeR and limma/voom in R.
+Protocol roughly follows the protocol described at: https://informatics.fas.harvard.edu/best-practices-for-de-novo-transcriptome-assembly-with-trinity.html and uses Trinity for de novo assembly. Annotations of the contigs were done using Trinotate.
 
 ## Preprocessing
 
@@ -53,4 +53,4 @@ To assess completeness, we use BUSCO.
 
 ## Annotations
 
-The assembled transcriptome was annotated using the TransDecoder (Trinity) and Trinotate as described in the wikis of both tools.
+The assembled transcriptome was annotated using the TransDecoder (Trinity) and [Trinotate](https://github.com/Trinotate/Trinotate/wiki) as described in the wikis of both tools.
