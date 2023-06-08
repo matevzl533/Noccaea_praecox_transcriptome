@@ -29,7 +29,7 @@ Trinotate --create \
  --use_diamond
 
 ## Initialize Trinotate db
-Trinotate --db Np_complete.sqlite --init \
+Trinotate --db Np_cdhit90.sqlite --init \
            --gene_trans_map '/ssd4tb/Trinity_cdhit90.fasta.gene_trans_map' \
            --transcript_fasta '/ssd4tb/Trinity_cdhit90.fasta' \
            --transdecoder_pep '/ssd4tb/Trinity_cdhit90.fasta.transdecoder.pep'
@@ -38,9 +38,9 @@ Trinotate --db Np_complete.sqlite --init \
 Trinotate --db <sqlite.db> --CPU 30 \
                --transcript_fasta '/ssd4tb/Trinity_cdhit90.fasta' \
                --transdecoder_pep '/ssd4tb/Trinity_cdhit90.fasta.transdecoder.pep' \
-               --trinotate_data_dir '/ssd4tb/Np_complete'
+               --trinotate_data_dir '/ssd4tb/Np_cdhit90'
                --run "swissprot_blastp swissprot_blastx pfam signalp6 tmhmmv2 infernal EggnogMapper" \
                --use_diamond
 
 ## Generate Trinotate report
-Trinotate --db Np_complete.sqlite --report > Np_complete.tsv
+Trinotate --db Np_cdhit90.sqlite --report > Np_cdhit90.tsv
