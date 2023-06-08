@@ -1,4 +1,4 @@
-# Transcriptome de novo assembly protocol
+# Noccaea praecox transcriptome de novo assembly protocol
 Protocol roughly follows the protocol described at: https://informatics.fas.harvard.edu/best-practices-for-de-novo-transcriptome-assembly-with-trinity.html and uses Trinity for de novo assembly. Annotations of the contigs were done using Trinotate.
 
 ## Preprocessing
