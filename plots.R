@@ -20,6 +20,43 @@ source("customR/penguin_palette.R")
 trinotate_data <- read_trinotate("data/Np_cdhit90.tsv")
 # Import contigs' length distribution
 trinity_cdhit90_length <- read.table("data/Trinity_cdhit90_length_distribution.txt", col.names = c("transcript", "length"))
+# Import BUSCO results
+busco <- read.table("data/BUSCO.txt", header = T)
+
+# Plot Figure 1a
+busco_transcripts.gg <- busco %>%
+  ggplot(.,aes(x="", y=Transcripts, fill=BUSCOs)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0, direction = 1) +
+  theme_void() +
+  ylab("No. of transcripts") +
+  #labs(fill="Top 10 KEGG terms") +
+  scale_fill_penguin(palette = "middle-main") +
+  theme(axis.text = element_blank())
+
+# Save ggplot object
+ggsave(busco_transcripts.gg, file="plots/busco_transcripts_plot.png", dpi = 300, width = 3000, height = 1500, units = "px")  
+
+# Plot Figure 1b
+busco_proteins.gg <- busco %>%
+  ggplot(.,aes(x="", y=Proteins, fill=BUSCOs)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0, direction = 1) +
+  theme_void() +
+  ylab("No. of transcripts") +
+  #labs(fill="Top 10 KEGG terms") +
+  scale_fill_penguin(palette = "middle-main") +
+  theme(axis.text = element_blank())
+
+# Save ggplot object
+ggsave(busco_proteins.gg, file="plots/busco_proteins_plot.png", dpi = 300, width = 3000, height = 1500, units = "px")  
+
+# Complete Figure 1
+busco_grouped.gg <- ggpubr::ggarrange(busco_transcripts.gg,busco_proteins.gg, ncol=2, nrow=1, align = "v",
+                  labels=c("a", "b"),common.legend = T, legend = "bottom")
+
+# Save ggplot object
+ggsave(busco_grouped.gg, file="plots/busco_complete_plot.png", dpi = 300, width = 3000, height = 1500, units = "px")
 
 # Cut contig lengths into bins and beautify for the plot
 trinity_cdhit90_ld.plot <- trinity_cdhit90_length %>%
