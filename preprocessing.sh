@@ -11,11 +11,11 @@
 cd ssd4tb
 
 # Initial quality check using FastQC and MultiQC
-echo "Preprocessing pipeline started" > pipeline_log.txt
-echo Current Date and Time is: `date +"%Y-%m-%d %T"` >> pipeline_log.txt
+echo "Preprocessing pipeline started" > '/ssd4tb/pipeline_log.txt'
+echo Current Date and Time is: `date +"%Y-%m-%d %T"` >> '/ssd4tb/pipeline_log.txt'
 
 SECONDS=0
-echo "Running FastQC on raw reads" | tee -a pipeline_log.txt
+echo "Running FastQC on raw reads" | tee -a '/ssd4tb/pipeline_log.txt'
 
 # run FastQC on all files in the dir trimmed_reads
 find /ssd4tb/raw_reads/ -name '*.fastq.gz' | xargs fastqc
@@ -23,14 +23,14 @@ find /ssd4tb/raw_reads/ -name '*.fastq.gz' | xargs fastqc
 # combine reports with MultiQC in the folder 'raw_reads'
 multiqc /ssd4tb/raw_reads/ -o /ssd4tb/raw_reads/ -n raw_reads_report
 
-echo "Time needed to finish FastQC step on raw reads: $SECONDS seconds" >> pipeline_log.txt
+echo "Time needed to finish FastQC step on raw reads: $SECONDS seconds" >> '/ssd4tb/pipeline_log.txt'
 
 # Removing erroneous k-mers from Illumina paired-end reads
 # Run with the highest possible number of cores
 SECONDS=0
-echo "Running Rcorrector on raw reads" | tee -a pipeline_log.txt
+echo "Running Rcorrector on raw reads" | tee -a '/ssd4tb/pipeline_log.txt'
 mkdir cor_reads
-echo "Corrected reads will be in cor_reads folder" | tee -a pipeline_log.txt
+echo "Corrected reads will be in cor_reads folder" | tee -a '/ssd4tb/pipeline_log.txt'
 
 # Raw reads are in folder 'raw_reads'
 fqdir=/ssd4tb/raw_reads
@@ -42,7 +42,7 @@ for r1 in "$fqdir"/*1.fastq.gz; do
         echo "$r2 not found" >&2
     fi
 done
-echo "Time needed to finish Rcorrector step on raw reads: $SECONDS seconds" >> pipeline_log.txt
+echo "Time needed to finish Rcorrector step on raw reads: $SECONDS seconds" >> '/ssd4tb/pipeline_log.txt'
 
 # Discard read pairs for which one of the reads is deemed unfixable
 # Original python script from https://github.com/harvardinformatics/TranscriptomeAssemblyTools
@@ -50,17 +50,17 @@ echo "Time needed to finish Rcorrector step on raw reads: $SECONDS seconds" >> p
 # Not memory intensive, therefore assign as many cores as possible with -P => parallel processes
 
 SECONDS=0
-echo "Running Filter Uncorrectable on corrected reads" | tee -a pipeline_log.txt
-echo "Filtered reads will be in folder clean_reads" | tee -a pipeline_log.txt
+echo "Running Filter Uncorrectable on corrected reads" | tee -a '/ssd4tb/pipeline_log.txt'
+echo "Filtered reads will be in folder clean_reads" | tee -a '/ssd4tb/pipeline_log.txt'
 mkdir clean_reads
 cd clean_reads
 ls /ssd4tb/cor_reads/*1.cor.fq.gz | xargs -P30 -I@ bash -c 'python $HOME/TranscriptomeAssemblyTools/FilterUncorrectabledPEfastq_P3.py -1 "$1" -2 ${1%1.*.*}2.cor.fq.gz' _ @
-echo "Time needed to finish Rcorrector step on raw reads: $SECONDS seconds" >> pipeline_log.txt
+echo "Time needed to finish Rcorrector step on raw reads: $SECONDS seconds" >> '/ssd4tb/pipeline_log.txt'
 cd
 
 SECONDS=0
-echo "Running Trim Galore" | tee -a pipeline_log.txt
-echo Current Date and Time is: `date +"%Y-%m-%d %T"` >> pipeline_log.txt
+echo "Running Trim Galore" | tee -a '/ssd4tb/pipeline_log.txt'
+echo Current Date and Time is: `date +"%Y-%m-%d %T"` >> '/ssd4tb/pipeline_log.txt'
 
 # adapter removal and read quality trimming of paired-read fastq-files
 # trim_galore --paired --retain_unpaired --phred33 --output_dir trimmed_reads --length 50 -q 5 --stringency 1 -e 0.1 --cores 2 SAMPLE_R1.fastq.gz SAMPLE_R2.fastq.gz
@@ -83,7 +83,7 @@ trim_galore --paired --retain_unpaired --phred33 \
     fi
 done
 
-echo "Time needed to finish Trim Galor step: $SECONDS seconds" >> pipeline_log.txt
+echo "Time needed to finish Trim Galor step: $SECONDS seconds" >> '/ssd4tb/pipeline_log.txt'
 
 # Check against SILVA rRNA db
 # The files you want are *_blacklist_paired_unaligned.fq.gz
@@ -105,8 +105,8 @@ for r1 in "$fqdir"/*1.cor_val_1.fq; do
 done
 
 SECONDS=0
-echo "Running FastQC on processed reads" | tee -a pipeline_log.txt
-echo Current Date and Time is: `date +"%Y-%m-%d %T"` >> pipeline_log.txt
+echo "Running FastQC on processed reads" | tee -a '/ssd4tb/pipeline_log.txt'
+echo Current Date and Time is: `date +"%Y-%m-%d %T"` >> '/ssd4tb/pipeline_log.txt'
 
 # Moving the files we want to filtered_reads folder
 
@@ -122,8 +122,8 @@ find -name '*_paired_unaligned.fq*.gz' | xargs fastqc
 # combine reports with MultiQC
 multiqc /ssd4tb/filtered_reads/ -o /ssd4tb/filtered_reads/ -n filtered_reads_report
 
-echo "Time needed to finish second FastQC step on processed reads: $SECONDS seconds" | tee -a pipeline_log.txt
-echo "FastQC on processed reads finished." | tee -a pipeline_log.txt
-echo "###################################" | tee -a pipeline_log.txt
-echo "Preprocessing pipeline finished." | tee -a pipeline_log.txt
+echo "Time needed to finish second FastQC step on processed reads: $SECONDS seconds" | tee -a '/ssd4tb/pipeline_log.txt'
+echo "FastQC on processed reads finished." | tee -a '/ssd4tb/pipeline_log.txt'
+echo "###################################" | tee -a '/ssd4tb/pipeline_log.txt'
+echo "Preprocessing pipeline finished." | tee -a '/ssd4tb/pipeline_log.txt'
 cd
