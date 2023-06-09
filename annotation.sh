@@ -24,8 +24,8 @@ TransDecoder.Predict -t '/ssd4tb/Trinity_cdhit90.fasta'
 # Run Trinotate
 ## Create Trinotate db
 Trinotate --create \
- --db Np_complete.sqlite \
- --trinotate_data_dir '/ssd4tb/Np_complete' \
+ --db Np_cdhit90.sqlite \
+ --trinotate_data_dir '/ssd4tb/Np_cdhit90' \
  --use_diamond
 
 ## Initialize Trinotate db
