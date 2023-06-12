@@ -17,7 +17,7 @@ source("customR/trinotateR_add.R")
 source("customR/penguin_palette.R")
 
 # Import Trinotate table
-trinotate_data <- read_trinotate("data/Np_cdhit90.tsv")
+trinotate_data <- read_trinotate("data/Trinotate_results.tsv")
 # Import contigs' length distribution
 trinity_cdhit90_length <- read.table("data/Trinity_cdhit90_length_distribution.txt", col.names = c("transcript", "length"))
 # Import BUSCO results
