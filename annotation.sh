@@ -43,4 +43,4 @@ Trinotate --db <sqlite.db> --CPU 30 \
                --use_diamond
 
 ## Generate Trinotate report
-Trinotate --db Np_cdhit90.sqlite --report > Np_cdhit90.tsv
+Trinotate --db Np_cdhit90.sqlite --report > Trinotate_results.tsv
