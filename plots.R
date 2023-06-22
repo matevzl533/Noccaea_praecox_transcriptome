@@ -191,9 +191,11 @@ trinotate_data_filtered <- trinotate_data %>%
 # Save filtered trinotate table
 write.csv(trinotate_data_filtered, file="tables/trinotate_table_filtered.csv")
 
-# Print original and filtered summary side-by-side for comparison
-summart_table <- cbind(summary_trinotate(trinotate_data[,1:17]), summary_trinotate(trinotate_data_filtered[,1:17]))
-write.table(summart_table, file="intermediate_objects/trinotate_results.txt", sep="\t", quote = FALSE)
+# Print summary table of Trinotate annotations (Table 2.)
+summary_trinotate(trinotate_data) %>%
+  filter(row_number()!=1) %>%
+  mutate(uniq_perc = round(unique*100/.[1,"unique"],2)) %>%
+  mutate(total_perc = round(total*100/.[1,"total"],2))
 
 # Split GO results from filtered trinotate table
 go <- split_GOp(trinotate_data_filtered)
