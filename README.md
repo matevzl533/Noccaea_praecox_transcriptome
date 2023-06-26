@@ -3,6 +3,8 @@ Protocol roughly follows the protocol described at: https://informatics.fas.harv
 
 ## Preprocessing
 
+The codes for the preprocessing process are available in the preprocess.sh file.
+
 ### Initial quality control
 
 We use FastQC with MultiQC to assess the quality of raw reads and visualise the reports.
