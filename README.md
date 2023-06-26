@@ -3,7 +3,7 @@ Protocol roughly follows the protocol described at: https://informatics.fas.harv
 
 ## Preprocessing
 
-The codes for the preprocessing process are available in the preprocess.sh file.
+The codes for the preprocessing steps are available in the preprocessing.sh file.
 
 ### Initial quality control
 
@@ -34,6 +34,7 @@ Re-run the QC from step 1. Ideally, there will be no trend in adapter contaminat
 ### de novo assembly with Trinity
 
 We used [Trinity](https://github.com/trinityrnaseq/trinityrnaseq) for transcriptome de novo assembly with default parameters with the addition of strand information (--SS_lib_type RF).
+The codes for the steps after assembly with Trinity are included in the postprocessing.sh file.
 
 ### Removing redundancy
 
@@ -55,4 +56,8 @@ To assess completeness, we use BUSCO.
 
 ## Annotations
 
-The assembled transcriptome was annotated using the TransDecoder (Trinity) and [Trinotate](https://github.com/Trinotate/Trinotate/wiki) as described in the wikis of both tools.
+The assembled transcriptome was annotated using the TransDecoder (Trinity) and [Trinotate](https://github.com/Trinotate/Trinotate/wiki) as described in the wikis of both tools. In addition, we run another BLASTp search against SwissProt for additional parameters that are not included in ther original search through Trinotate.
+
+## Filtration of the contaminants
+
+We removed isoforms that showed blast hits against SwissProt with: i) taxonomic affiliation to Primates, Muridae or Bovidae (the most frequent contaminants); ii) identity > 90%; iii) E-value < 1E-20; iv) query coverage per subject > 40%. The code for this step is included in the blastp_filtration.R and postprocessing.sh (which call the R file).
