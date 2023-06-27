@@ -34,7 +34,7 @@ Re-run the QC from step 1. Ideally, there will be no trend in adapter contaminat
 ### de novo assembly with Trinity
 
 We used [Trinity](https://github.com/trinityrnaseq/trinityrnaseq) for transcriptome de novo assembly with default parameters with the addition of strand information (--SS_lib_type RF).
-The codes for the steps after assembly with Trinity are included in the postprocessing.sh file.
+The codes for the steps after assembly with Trinity (redundancy removal and evaluation of assembly quality) are included in the postprocessing.sh file.
 
 ### Removing redundancy
 
@@ -60,4 +60,4 @@ The assembled transcriptome was annotated using the TransDecoder (Trinity) and [
 
 ## Filtration of the contaminants
 
-To find contigs originating outside of the N. praecox transcriptome, we used the [NCBI Foreign Contamination Screen (FCS) caller] (https://github.com/ncbi/fcs)
+To find contigs originating outside of the N. praecox transcriptome, we used the [NCBI Foreign Contamination Screen (FCS) caller](https://github.com/ncbi/fcs)
